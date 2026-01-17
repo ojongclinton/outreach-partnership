@@ -2,7 +2,6 @@ import { motion, useInView, useScroll, AnimatePresence } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import {
   HiOutlineSparkles,
-  HiOutlineLightningBolt,
   HiOutlineChartBar,
   HiOutlineChatAlt2,
   HiOutlineCode
@@ -25,7 +24,7 @@ import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 import LeadCaptureModal from './components/LeadCaptureModal';
 
 // Animation variants
-const fadeInUp = {
+const fadeInUp:any = {
   hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
