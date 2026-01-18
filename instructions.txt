@@ -25,3 +25,69 @@ Backgrounds & Visual Details: Create atmosphere and depth rather than defaulting
 NEVER use generic AI-generated aesthetics like overused font families (Inter, Roboto, Arial, system fonts), cliched color schemes (particularly purple gradients on white backgrounds), predictable layouts and component patterns, and cookie-cutter design that lacks context-specific character.
 Interpret creatively and make unexpected choices that feel genuinely designed for the context. No design should be the same. Vary between light and dark themes, different fonts, different aesthetics. NEVER converge on common choices (Space Grotesk, for example) across generations.
 IMPORTANT: Match implementation complexity to the aesthetic vision. Maximalist designs need elaborate code with extensive animations and effects. Minimalist or refined designs need restraint, precision, and careful attention to spacing, typography, and subtle details. Elegance comes from executing the vision well.
+
+---
+
+Marketing/Sales Friendly Prompt
+description: Build direct-response, conversion-focused sales pages that sell. Use this when creating landing pages, sales pages, or any page meant to convert visitors into leads/customers. Prioritizes clarity, benefits, and action over corporate polish.
+
+This prompt guides creation of sales pages that actually convert — inspired by proven direct-response marketing (like selllikecrazy.co), not corporate websites.
+
+Core Principles:
+1. SIMPLE over fancy. MVP feel, not corporate polish. Avoid complex animations and effects that distract from the message.
+2. BENEFITS over features. Everything should answer "What's in it for the customer?" Remove anything that talks about "us" or "our expertise" — focus on THEIR results.
+3. LONG-FORM works. People scroll when content is compelling. Don't fear length — fear boring content.
+4. REPEATED CTAs. Place a call-to-action button after every 2-3 sections. No matter where someone stops scrolling, there should be a CTA nearby.
+5. STICKY CTA at bottom. Always visible, always accessible.
+
+Page Structure (in order):
+1. Hero: Big, bold, centered headline focused on the outcome they want. Subheadline that explains how. Single primary CTA button. Urgency/scarcity badge if applicable.
+
+2. Pain Points ("Sound Familiar?"): List 6-8 specific frustrations your target customer faces. Use their language. Make them nod and think "that's me." End with a reframe + CTA.
+
+3. What You Get: 4-6 benefit cards. Short titles, simple descriptions. Focus on outcomes (More Sales, Save Time, etc.), not deliverables.
+
+4. How It Works: 3-4 simple steps. Make the process feel easy and low-risk. End with CTA.
+
+5. Testimonials/Social Proof: Real quotes with names, roles, and specific results. Numbers are powerful ("300% more bookings", "60% revenue increase"). Add 5-star ratings.
+
+6. Who This Is For / Not For: Two-column comparison. Left = ideal customer traits. Right = who should NOT work with you. This qualifies leads and makes good fits feel special. End with CTA.
+
+7. Comparison Table: Compare "Do It Yourself" vs "Hire Freelancers" vs "Work With Us". Make the choice obvious. Use checkmarks and X icons.
+
+8. What Happens Next (demystify the CTA): If your CTA is "Book a Call", explain exactly what happens on that call. Remove fear and uncertainty. 4 simple steps.
+
+9. Pricing: Keep it simple. 3 options max. Highlight the recommended one. Include feature lists with checkmarks. CTA on each card.
+
+10. FAQ: 6-10 common questions/objections. Answer them directly and honestly. End section with CTA.
+
+11. Final CTA Section: Urgency badge, big headline, compelling subtext, prominent button, reassurance text ("No obligation", "Free", etc.)
+
+Writing Style:
+- Conversational, not corporate. Write like you talk.
+- Short sentences. Short paragraphs.
+- Use "you" and "your" constantly. Minimize "we" and "our".
+- Specific > vague. "300% more bookings" beats "increased bookings".
+- Address objections before they arise.
+- Create urgency without being sleazy (limited spots, limited time, etc.)
+
+Design Guidelines:
+- Big, bold headlines. Readable from across the room.
+- High contrast. Dark backgrounds with bright accent colors work well.
+- Generous whitespace between sections.
+- Cards and boxes to organize information.
+- Icons to support text (not replace it).
+- No fancy hover effects or complex animations — keep it focused on the message.
+- Mobile-first. Most traffic is mobile.
+
+What to AVOID:
+- Corporate jargon ("synergy", "leverage", "solutions")
+- Talking about yourself/your team/your process excessively
+- Fancy animations that distract from the message
+- Multiple CTAs with different actions (pick ONE action you want them to take)
+- Walls of text without visual breaks
+- Stock photos of handshakes and office buildings
+- Pricing hidden or "contact for quote" (show real numbers when possible)
+- Weak CTAs ("Learn More", "Submit") — use action-oriented text ("Book Your Free Call", "Get Started Now")
+
+Remember: The goal is CONVERSION, not awards. A simple page that converts beats a beautiful page that doesn't.

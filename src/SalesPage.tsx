@@ -1,608 +1,251 @@
-import { motion, useInView, useScroll, AnimatePresence } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import {
-  HiOutlineSparkles,
-  HiOutlineChartBar,
-  HiOutlineChatAlt2,
-  HiOutlineCode
-} from 'react-icons/hi';
-import {
-  FaInstagram,
-  FaChartLine,
-  FaRocket,
-  FaStar,
-  FaQuoteLeft,
-  FaCog,
-  FaCalendarAlt,
-  FaShoppingCart,
-  FaPlug
-} from 'react-icons/fa';
-import { IoClose } from 'react-icons/io5';
-import { BsArrowRight, BsCheckLg, BsFire, BsLightning } from 'react-icons/bs';
-import { RiTimerFlashLine } from 'react-icons/ri';
-import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { FaStar, FaQuoteLeft, FaTimes, FaCheck } from 'react-icons/fa';
+import { BsCheckLg, BsFire, BsX } from 'react-icons/bs';
+import { HiOutlineArrowRight } from 'react-icons/hi';
 import LeadCaptureModal from './components/LeadCaptureModal';
 
-// Animation variants
-const fadeInUp:any = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' }
-  }
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: {
-    opacity: 1,
-    scale: 1,
-    transition: { duration: 0.5 }
-  }
-};
-
-const slideVariants = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? 1000 : -1000,
-    opacity: 0
-  }),
-  center: {
-    x: 0,
-    opacity: 1
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? -1000 : 1000,
-    opacity: 0
-  })
-};
-
-// Reusable component for scroll animations
-function AnimatedSection({ children, className = '' }: { children: React.ReactNode, className?: string }) {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? "visible" : "hidden"}
-      variants={fadeInUp}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 export default function SalesPage() {
-  const [showStickyCTA, setShowStickyCTA] = useState(false);
-  const [currentPackageIndex, setCurrentPackageIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { scrollY } = useScroll();
-
   const calendlyUrl = import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com';
 
-  useEffect(() => {
-    return scrollY.on('change', (latest) => {
-      setShowStickyCTA(latest > 800);
-    });
-  }, [scrollY]);
-
-  const navigatePackages = (newIndex: number) => {
-    setDirection(newIndex > currentPackageIndex ? 1 : -1);
-    setCurrentPackageIndex(newIndex);
-  };
-
-  const handleCTAClick = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleCTAClick = () => {
     setIsModalOpen(true);
   };
 
   return (
-    <div className="min-h-screen bg-primary-bg text-white overflow-x-hidden">
-
-      {/* Sticky CTA Bar */}
-      <motion.div
-        initial={{ y: -100 }}
-        animate={{ y: showStickyCTA ? 0 : -100 }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="fixed top-0 left-0 right-0 z-50 bg-secondary-bg/95 backdrop-blur-lg border-b border-accent-cyan/20 shadow-lg"
-      >
-        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <BsFire className="text-accent-orange text-2xl" />
-            <span className="font-display font-bold text-lg">Limited Spots This Month</span>
-          </div>
-          <button
-            onClick={handleCTAClick}
-            className="group relative px-8 py-3 bg-accent-cyan text-primary-bg font-display font-bold text-sm uppercase tracking-wider overflow-hidden transition-all hover:-translate-y-1"
-          >
-            <span className="relative z-10">Book Free Call</span>
-            <div className="absolute inset-0 bg-accent-orange transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400" />
-          </button>
-        </div>
-      </motion.div>
+    <div className="min-h-screen bg-primary-bg text-white">
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Animated background orbs - more pronounced */}
-        <div className="absolute top-0 right-0 w-[80%] h-[120%] -translate-y-1/2 translate-x-1/4 opacity-40">
-          <motion.div
-            className="w-full h-full rounded-full bg-accent-cyan blur-[150px]"
-            animate={{
-              scale: [1, 1.2, 1],
-              x: [0, -50, 0],
-              y: [0, 50, 0]
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          />
-        </div>
-        <div className="absolute bottom-0 left-0 w-[60%] h-[80%] translate-y-1/3 -translate-x-1/10 opacity-30">
-          <motion.div
-            className="w-full h-full rounded-full bg-accent-orange blur-[150px]"
-            animate={{
-              scale: [1, 1.3, 1],
-              x: [0, 50, 0],
-              y: [0, -50, 0]
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: 2
-            }}
-          />
-        </div>
+      <section className="min-h-screen flex flex-col items-center justify-center px-6 text-center relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-cyan/10 rounded-full blur-[150px]" />
 
-        <div className="container mx-auto px-6 lg:px-12 relative z-10 py-32">
+        <div className="relative z-10 max-w-4xl mx-auto">
           <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={staggerContainer}
-            className="max-w-7xl"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
           >
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-wrap items-center gap-3 mb-6"
-            >
-              <span className="text-accent-cyan text-sm font-bold uppercase tracking-[0.15em]">
-                Marketing Strategy + Custom Software
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-orange/20 border border-accent-orange/50 mb-8">
+              <BsFire className="text-accent-orange" />
+              <span className="text-accent-orange text-sm font-bold uppercase tracking-wider">
+                Only 5 Spots Left This Month
               </span>
-              <div className="flex items-center gap-2 px-3 py-1 bg-accent-orange/20 border border-accent-orange/50">
-                <RiTimerFlashLine className="text-accent-orange" />
-                <span className="text-accent-orange text-xs font-bold uppercase">Only 5 Spots Left</span>
-              </div>
-            </motion.div>
-
-            <motion.h1
-              variants={fadeInUp}
-              className="font-display text-6xl md:text-8xl lg:text-9xl font-black leading-[0.95] mb-8 max-w-6xl"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #00d9ff 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              We Build Systems That Generate Customers
-            </motion.h1>
-
-            <motion.p
-              variants={fadeInUp}
-              className="text-xl md:text-2xl text-gray-300 max-w-3xl mb-12 leading-relaxed font-light"
-            >
-              Marketing campaigns, custom booking systems, business automation, and conversion-focused web applications — all built and managed under one roof.
-            </motion.p>
-
-            {/* Trust badges */}
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-wrap items-center gap-8 mb-12 text-gray-400"
-            >
-              <div className="flex items-center gap-2">
-                <FaChartLine className="text-accent-cyan text-2xl" />
-                <div>
-                  <div className="text-2xl font-black text-white">500K+</div>
-                  <div className="text-xs uppercase tracking-wider">Revenue Generated</div>
-                </div>
-              </div>
-              <div className="h-12 w-px bg-gray-700" />
-              <div className="flex items-center gap-2">
-                <HiOutlineSparkles className="text-accent-cyan text-2xl" />
-                <div>
-                  <div className="text-2xl font-black text-white">50+</div>
-                  <div className="text-xs uppercase tracking-wider">Systems Built</div>
-                </div>
-              </div>
-              <div className="h-12 w-px bg-gray-700" />
-              <div className="flex items-center gap-2">
-                <FaStar className="text-accent-yellow text-2xl" />
-                <div>
-                  <div className="text-2xl font-black text-white">4.9/5</div>
-                  <div className="text-xs uppercase tracking-wider">Client Rating</div>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-6"
-            >
-              <button
-                onClick={handleCTAClick}
-                className="group relative px-10 py-5 bg-accent-cyan text-primary-bg font-display font-bold text-base uppercase tracking-wider overflow-hidden transition-all hover:shadow-[0_0_60px_rgba(255,107,53,0.4)] hover:-translate-y-1"
-              >
-                <span className="relative z-10">Book a Free Strategy Call</span>
-                <div className="absolute inset-0 bg-accent-orange transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400" />
-              </button>
-
-              <a
-                href="#solution"
-                className="group px-10 py-5 border-2 border-gray-500 text-white font-display font-bold text-base uppercase tracking-wider transition-all hover:border-accent-cyan hover:text-accent-cyan hover:-translate-y-1"
-              >
-                See How It Works
-                <BsArrowRight className="inline-block ml-2 group-hover:translate-x-2 transition-transform" />
-              </a>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Problem Section */}
-      <section className="relative bg-secondary-bg border-t border-accent-cyan/20 py-24 lg:py-32">
-        <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              The Problem
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-16 max-w-4xl leading-tight">
-              Struggling to Get Real Results Online?
-            </h2>
-          </AnimatedSection>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
-          >
-            {[
-              'You run ads but your website can\'t handle bookings or payments',
-              'You need a reservation system but developers quote 6+ months',
-              'Your marketing agency can\'t build the automation you need',
-              'You\'re juggling freelancers who don\'t understand your business goals'
-            ].map((pain, index) => (
-              <motion.div
-                key={index}
-                variants={fadeInUp}
-                whileHover={{ scale: 1.02, rotateY: 2 }}
-                className="relative bg-tertiary-bg p-10 border-l-4 border-accent-orange group hover:border-accent-cyan transition-all duration-300 cursor-pointer"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <IoClose className="absolute top-6 right-6 text-4xl text-accent-orange/30 group-hover:rotate-90 transition-transform duration-300" />
-                <p className="text-xl md:text-2xl font-medium text-white leading-relaxed">
-                  {pain}
-                </p>
-              </motion.div>
-            ))}
-          </motion.div>
-
-          <AnimatedSection>
-            <div className="text-center py-12 border-t border-b border-tertiary-bg">
-              <p className="text-2xl md:text-3xl lg:text-4xl font-semibold text-accent-cyan">
-                The issue isn't effort — you need a team that does both marketing AND engineering.
-              </p>
             </div>
-          </AnimatedSection>
-        </div>
-      </section>
 
-      {/* What Makes Us Different Section */}
-      <section className="relative bg-primary-bg py-24 lg:py-32">
-        <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              Our Advantage
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-12 max-w-5xl leading-tight">
-              Most Agencies Can't Code. Most Developers Can't Market.
-            </h2>
-            <p className="text-2xl text-gray-300 max-w-4xl leading-relaxed mb-16">
-              Our team combines <span className="text-accent-cyan font-bold">development expertise</span> with <span className="text-accent-cyan font-bold">marketing strategy</span>. We build the systems, run the campaigns, and deliver results — all under one roof.
+            <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8">
+              Get More Customers
+              <br />
+              <span className="text-accent-cyan">Without The Hassle</span>
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto mb-12 leading-relaxed">
+              We handle your marketing and build the systems you need to grow — so you can focus on running your business.
             </p>
-          </AnimatedSection>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
-          >
-            <motion.div
-              variants={scaleIn}
-              className="relative bg-secondary-bg p-12 border-l-4 border-accent-cyan"
+            <button
+              onClick={handleCTAClick}
+              className="px-12 py-5 bg-accent-cyan text-primary-bg font-display font-bold text-lg uppercase tracking-wider hover:bg-accent-orange transition-colors"
             >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-4 bg-accent-cyan/10 rounded-full">
-                  <FaChartLine className="text-5xl text-accent-cyan" />
-                </div>
-                <h3 className="font-display text-3xl font-black">Marketing Strategy</h3>
-              </div>
-              <ul className="space-y-3 text-lg text-gray-300">
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
-                  <span>Paid campaigns (Meta, Google, TikTok)</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
-                  <span>Social media management & content</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
-                  <span>Funnel strategy & conversion optimization</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
-                  <span>Analytics & performance tracking</span>
-                </li>
-              </ul>
-            </motion.div>
+              Book Your Free Strategy Call
+            </button>
 
-            <motion.div
-              variants={scaleIn}
-              className="relative bg-secondary-bg p-12 border-l-4 border-accent-orange"
-            >
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-4 bg-accent-orange/10 rounded-full">
-                  <HiOutlineCode className="text-5xl text-accent-orange" />
-                </div>
-                <h3 className="font-display text-3xl font-black">Custom Development</h3>
-              </div>
-              <ul className="space-y-3 text-lg text-gray-300">
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-orange mt-1 flex-shrink-0" />
-                  <span>Booking & reservation systems</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-orange mt-1 flex-shrink-0" />
-                  <span>Business automation that saves time</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-orange mt-1 flex-shrink-0" />
-                  <span>Custom web applications</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <BsCheckLg className="text-accent-orange mt-1 flex-shrink-0" />
-                  <span>Payment processing & integrations</span>
-                </li>
-              </ul>
-            </motion.div>
+            <p className="mt-6 text-gray-500 text-sm">
+              Free 30-minute call. No obligation.
+            </p>
           </motion.div>
+        </div>
+      </section>
 
-          <AnimatedSection>
-            <div className="mt-16 text-center">
-              <div className="inline-block px-8 py-4 bg-tertiary-bg border-l-4 border-accent-yellow">
-                <p className="text-xl font-bold text-accent-yellow">
-                  = You get growth campaigns that actually convert + the systems to scale them
+      {/* Pain Points Section */}
+      <section className="py-20 lg:py-28 bg-secondary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6">
+            Sound Familiar?
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            If any of these hit home, you're in the right place.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            {[
+              "You know you need to be online, but you don't know where to start",
+              "You've paid for ads before and got nothing back",
+              "Your website looks outdated and you're embarrassed to share it",
+              "You're losing customers to competitors who show up first on Google",
+              "You've hired freelancers who disappeared or delivered garbage",
+              "You're doing everything manually — bookings, follow-ups, invoices",
+              "You don't have time to post on social media every day",
+              "You've been \"meaning to\" fix your online presence for months",
+            ].map((pain, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-4 p-6 bg-primary-bg border-l-4 border-accent-orange"
+              >
+                <BsX className="text-accent-orange text-2xl flex-shrink-0 mt-1" />
+                <p className="text-lg text-gray-300">{pain}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-16">
+            <p className="text-2xl md:text-3xl font-bold text-white mb-8">
+              You don't have a marketing problem.<br />
+              <span className="text-accent-cyan">You have a "too many things to figure out" problem.</span>
+            </p>
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Let Us Handle It
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* What You Get Section */}
+      <section className="py-20 lg:py-28 bg-primary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-16">
+            Here's What You Get
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {[
+              {
+                title: 'More Visibility',
+                description: 'Show up where your customers are searching. We run your ads and manage your social media.',
+              },
+              {
+                title: 'More Leads',
+                description: 'Capture interested customers with landing pages and lead forms that actually convert.',
+              },
+              {
+                title: 'More Sales',
+                description: 'Turn visitors into paying customers with a website built to sell.',
+              },
+              {
+                title: 'Save Time',
+                description: 'Automate your bookings, reminders, and follow-ups. Stop doing everything manually.',
+              },
+              {
+                title: 'One Team',
+                description: 'No more juggling freelancers. Marketing and tech handled under one roof.',
+              },
+              {
+                title: 'Real Results',
+                description: "Monthly reports showing what's working. We focus on revenue, not vanity metrics.",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="p-8 bg-secondary-bg border border-tertiary-bg"
+              >
+                <h3 className="font-display text-2xl font-bold text-accent-cyan mb-4">
+                  {item.title}
+                </h3>
+                <p className="text-gray-300 leading-relaxed">
+                  {item.description}
                 </p>
               </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Services Section */}
-      <section className="relative bg-secondary-bg py-24 lg:py-32">
-        <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              What We Build
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-16 max-w-4xl leading-tight">
-              Full-Stack Growth Services
-            </h2>
-          </AnimatedSection>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {[
-              {
-                icon: <FaInstagram />,
-                title: 'Get Found Online',
-                highlight: 'Visibility',
-                items: [
-                  'Professional website or landing page',
-                  'Social media content & posting',
-                  'Facebook & Google Ads',
-                  'Show up when customers search'
-                ]
-              },
-              {
-                icon: <FaCalendarAlt />,
-                title: 'Get More Bookings',
-                highlight: 'Appointments',
-                items: [
-                  'Online booking system',
-                  'Automated SMS/Email reminders',
-                  'Ads to fill your calendar',
-                  'Reduce no-shows by 80%'
-                ]
-              },
-              {
-                icon: <FaShoppingCart />,
-                title: 'Sell Online',
-                highlight: 'E-commerce',
-                items: [
-                  'Online store setup',
-                  'Accept card & mobile payments',
-                  'Product launch campaigns',
-                  'Manage orders & inventory'
-                ]
-              },
-              {
-                icon: <FaCog />,
-                title: 'Automate & Scale',
-                highlight: 'Efficiency',
-                items: [
-                  'Automate repetitive tasks',
-                  'Lead capture & follow-up',
-                  'Connect all your tools',
-                  'Monthly performance reports'
-                ]
-              },
-              {
-                icon: <FaRocket />,
-                title: 'Launch & Grow',
-                highlight: 'Growth',
-                items: [
-                  'Custom web application',
-                  'Brand launch campaign',
-                  'Ongoing optimization',
-                  'Dedicated support'
-                ]
-              },
-              {
-                icon: <FaPlug />,
-                title: 'Custom Solution',
-                highlight: 'Tailored',
-                items: [
-                  'Tell us what you need',
-                  'We design it together',
-                  'Built to your specs',
-                  'Marketing included'
-                ]
-              }
-            ].map((service, index) => (
-              <motion.div
-                key={index}
-                variants={scaleIn}
-                whileHover={{ scale: 1.03, rotateY: 3 }}
-                className="group relative bg-primary-bg p-10 border border-tertiary-bg hover:border-accent-cyan transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_60px_rgba(0,217,255,0.1)]"
-                style={{ transformStyle: 'preserve-3d' }}
-              >
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-accent-cyan to-accent-orange transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-
-                <div className="flex items-center justify-between mb-6">
-                  <div className="text-5xl text-accent-cyan group-hover:scale-110 transition-transform">
-                    {service.icon}
-                  </div>
-                  <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-gradient-to-r from-accent-cyan/20 to-accent-orange/20 text-white">
-                    {service.highlight}
-                  </span>
-                </div>
-
-                <h3 className="font-display text-2xl md:text-3xl font-black mb-6">
-                  {service.title}
-                </h3>
-
-                <ul className="space-y-4">
-                  {service.items.map((item, i) => (
-                    <li key={i} className="flex items-start gap-3 text-gray-300 text-base">
-                      <BsArrowRight className="text-accent-orange mt-1 flex-shrink-0 group-hover:translate-x-1 transition-transform" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
             ))}
-          </motion.div>
-
-          {/* Custom Requirements CTA */}
-          <AnimatedSection>
-            <div className="mt-16 p-10 bg-gradient-to-r from-accent-cyan/10 to-accent-orange/10 border border-tertiary-bg text-center">
-              <h3 className="font-display text-2xl md:text-3xl font-black mb-4">
-                Have Something Specific in Mind?
-              </h3>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-6">
-                Don't see exactly what you need? No problem. Bring your idea, and we'll build a custom solution that fits your business and budget.
-              </p>
-              <button
-                onClick={handleCTAClick}
-                className="inline-block px-8 py-4 border-2 border-accent-cyan text-accent-cyan font-display font-bold text-sm uppercase tracking-wider transition-all hover:bg-accent-cyan hover:text-primary-bg hover:-translate-y-1"
-              >
-                Let's Discuss Your Project
-              </button>
-            </div>
-          </AnimatedSection>
+          </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="relative bg-secondary-bg py-24 lg:py-32">
+      {/* How It Works Section */}
+      <section className="py-20 lg:py-28 bg-secondary-bg">
         <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              Success Stories
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-16 max-w-4xl leading-tight">
-              Real Results From Real Businesses
-            </h2>
-          </AnimatedSection>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6">
+            How It Works
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            Simple process. No confusion. No runaround.
+          </p>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 lg:grid-cols-3 gap-8"
-          >
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
             {[
               {
-                quote: "They built us a custom booking system with automated SMS reminders. Our no-shows dropped 80% and bookings increased 300%. The system paid for itself in one month.",
+                step: '01',
+                title: 'Book a Call',
+                description: "Schedule a free 30-minute strategy call. We'll talk about your business and goals.",
+              },
+              {
+                step: '02',
+                title: 'Get Your Plan',
+                description: "We'll create a custom plan showing exactly what you need and what it costs.",
+              },
+              {
+                step: '03',
+                title: 'We Build & Launch',
+                description: 'Sit back while we build your website, set up your ads, and launch everything.',
+              },
+              {
+                step: '04',
+                title: 'You Get Results',
+                description: 'Watch the leads come in. We track everything and optimize for more.',
+              },
+            ].map((item, index) => (
+              <div key={index} className="text-center">
+                <div className="w-16 h-16 mx-auto mb-6 bg-accent-cyan text-primary-bg font-display font-black text-2xl flex items-center justify-center">
+                  {item.step}
+                </div>
+                <h3 className="font-display text-xl font-bold mb-3">{item.title}</h3>
+                <p className="text-gray-400">{item.description}</p>
+                {index < 3 && (
+                  <HiOutlineArrowRight className="hidden md:block text-accent-cyan text-2xl mx-auto mt-6" />
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-16">
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Start With Step 1
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Social Proof - Testimonials */}
+      <section className="py-20 lg:py-28 bg-primary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-16">
+            What Our Clients Say
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
+            {[
+              {
+                quote: "They built us a booking system with SMS reminders. No-shows dropped 80% and bookings went up 300%. Paid for itself in one month.",
                 author: "Marie D.",
-                role: "Owner, Beauty Salon",
-                result: "300% More Bookings"
+                role: "Beauty Salon Owner",
               },
               {
-                quote: "We needed an e-commerce platform with inventory sync and payment processing. They delivered in 6 weeks. Our online sales now account for 60% of revenue.",
+                quote: "We needed an online store with payment processing. They delivered in 6 weeks. Online sales now account for 60% of our revenue.",
                 author: "James M.",
-                role: "Founder, Retail Business",
-                result: "60% Revenue Online"
+                role: "Retail Business Owner",
               },
               {
-                quote: "Finally found a team that can run ads AND build the landing pages that convert. No more back-and-forth between agencies and developers.",
+                quote: "Finally found a team that runs ads AND builds the pages. No more back-and-forth between different agencies.",
                 author: "Aisha T.",
-                role: "CMO, Consulting Firm",
-                result: "12% Conversion Rate"
-              }
+                role: "Consulting Firm",
+              },
             ].map((testimonial, index) => (
-              <motion.div
+              <div
                 key={index}
-                variants={scaleIn}
-                whileHover={{ y: -8 }}
-                className="relative bg-primary-bg p-8 border-l-4 border-accent-cyan"
+                className="p-8 bg-secondary-bg border-l-4 border-accent-cyan"
               >
-                <FaQuoteLeft className="text-4xl text-accent-cyan/20 mb-4" />
+                <FaQuoteLeft className="text-3xl text-accent-cyan/30 mb-4" />
                 <p className="text-lg text-gray-300 leading-relaxed mb-6 italic">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-display font-bold text-white">{testimonial.author}</div>
+                    <div className="font-bold text-white">{testimonial.author}</div>
                     <div className="text-sm text-gray-500">{testimonial.role}</div>
                   </div>
                   <div className="flex gap-1">
@@ -611,244 +254,310 @@ export default function SalesPage() {
                     ))}
                   </div>
                 </div>
-                <div className="mt-4 pt-4 border-t border-tertiary-bg">
-                  <div className="text-accent-orange font-bold text-sm uppercase tracking-wider">
-                    {testimonial.result}
+              </div>
+            ))}
+          </div>
+
+          {/* More detailed case studies */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                quote: "I was spending 3 hours a day just managing appointments and sending reminders. Now it's all automated. I got my life back.",
+                author: "Pauline K.",
+                role: "Fitness Coach",
+                result: "15+ hours saved per week",
+              },
+              {
+                quote: "We went from zero online presence to ranking on the first page of Google in our area. The phone hasn't stopped ringing.",
+                author: "Thomas E.",
+                role: "Restaurant Owner",
+                result: "40% increase in reservations",
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className="p-8 bg-secondary-bg border border-tertiary-bg"
+              >
+                <FaQuoteLeft className="text-2xl text-accent-orange/30 mb-4" />
+                <p className="text-lg text-gray-300 leading-relaxed mb-6 italic">
+                  "{testimonial.quote}"
+                </p>
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="font-bold text-white">{testimonial.author}</div>
+                    <div className="text-sm text-gray-500">{testimonial.role}</div>
+                  </div>
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <FaStar key={i} className="text-accent-yellow" />
+                    ))}
                   </div>
                 </div>
-              </motion.div>
+                <div className="pt-4 border-t border-tertiary-bg">
+                  <span className="text-accent-cyan font-bold">{testimonial.result}</span>
+                </div>
+              </div>
             ))}
-          </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Who This Is For / Not For */}
+      <section className="py-20 lg:py-28 bg-secondary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-16">
+            Is This For You?
+          </h2>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
+            {/* This IS for you */}
+            <div className="p-8 bg-primary-bg border-2 border-accent-cyan">
+              <h3 className="font-display text-2xl font-bold text-accent-cyan mb-6 flex items-center gap-3">
+                <FaCheck /> This IS For You If...
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  "You're a business owner who wants more customers",
+                  "You're tired of figuring out marketing yourself",
+                  "You want a website that actually brings in money",
+                  "You're ready to invest in growing your business",
+                  "You value your time and want things done right",
+                  "You want one team handling everything",
+                ].map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
+                    <span className="text-gray-300">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* This is NOT for you */}
+            <div className="p-8 bg-primary-bg border-2 border-accent-orange">
+              <h3 className="font-display text-2xl font-bold text-accent-orange mb-6 flex items-center gap-3">
+                <FaTimes /> This is NOT For You If...
+              </h3>
+              <ul className="space-y-4">
+                {[
+                  "You're looking for the cheapest option possible",
+                  "You want to micromanage every detail",
+                  "You're not serious about growing your business",
+                  "You expect results overnight with zero effort",
+                  "You're not ready to invest in your success",
+                  "You just want a pretty website with no strategy",
+                ].map((item, index) => (
+                  <li key={index} className="flex items-start gap-3">
+                    <BsX className="text-accent-orange text-xl mt-0.5 flex-shrink-0" />
+                    <span className="text-gray-300">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <div className="text-center mt-16">
+            <p className="text-xl text-gray-400 mb-8">
+              If you checked more boxes on the left, let's talk.
+            </p>
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Book Your Free Call
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Table */}
+      <section className="py-20 lg:py-28 bg-primary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6">
+            Your Options
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            You could keep doing what you're doing. Or...
+          </p>
+
+          <div className="overflow-x-auto">
+            <table className="w-full max-w-5xl mx-auto">
+              <thead>
+                <tr className="border-b border-tertiary-bg">
+                  <th className="p-4 text-left"></th>
+                  <th className="p-4 text-center text-gray-400">Do It Yourself</th>
+                  <th className="p-4 text-center text-gray-400">Hire Freelancers</th>
+                  <th className="p-4 text-center bg-accent-cyan/10 text-accent-cyan">Work With Us</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Time investment', diy: 'Huge', freelance: 'Medium', us: 'Minimal' },
+                  { feature: 'Learning curve', diy: 'Steep', freelance: 'Medium', us: 'None' },
+                  { feature: 'Consistent results', diy: 'no', freelance: 'no', us: 'yes' },
+                  { feature: 'Marketing + Tech together', diy: 'no', freelance: 'no', us: 'yes' },
+                  { feature: 'Someone to call when things break', diy: 'no', freelance: 'Maybe', us: 'yes' },
+                  { feature: 'Strategy included', diy: 'no', freelance: 'no', us: 'yes' },
+                  { feature: 'Ongoing optimization', diy: 'no', freelance: 'Extra cost', us: 'yes' },
+                ].map((row, index) => (
+                  <tr key={index} className="border-b border-tertiary-bg">
+                    <td className="p-4 font-medium text-white">{row.feature}</td>
+                    <td className="p-4 text-center text-gray-400">
+                      {row.diy === 'no' ? <FaTimes className="inline text-red-500" /> : row.diy}
+                    </td>
+                    <td className="p-4 text-center text-gray-400">
+                      {row.freelance === 'no' ? <FaTimes className="inline text-red-500" /> : row.freelance}
+                    </td>
+                    <td className="p-4 text-center bg-accent-cyan/5 text-white font-medium">
+                      {row.us === 'yes' ? <FaCheck className="inline text-accent-cyan" /> : row.us}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="text-center mt-12">
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Choose The Easy Way
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* What Happens On The Call */}
+      <section className="py-20 lg:py-28 bg-secondary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6">
+            What Happens On The Call?
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            No pressure. No hard sell. Just a real conversation.
+          </p>
+
+          <div className="max-w-3xl mx-auto space-y-6">
+            {[
+              {
+                title: "We'll learn about your business",
+                description: "What do you do? Who are your customers? What's working and what's not?",
+              },
+              {
+                title: "We'll identify your biggest opportunities",
+                description: "Where are you leaving money on the table? What quick wins can we spot?",
+              },
+              {
+                title: "We'll show you what's possible",
+                description: "Based on what we learn, we'll share ideas for how you could grow.",
+              },
+              {
+                title: "We'll give you a clear next step",
+                description: "Whether you work with us or not, you'll leave with actionable advice.",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="flex items-start gap-6 p-6 bg-primary-bg border border-tertiary-bg"
+              >
+                <div className="w-10 h-10 bg-accent-cyan text-primary-bg font-bold flex items-center justify-center flex-shrink-0">
+                  {index + 1}
+                </div>
+                <div>
+                  <h3 className="font-display text-xl font-bold mb-2">{item.title}</h3>
+                  <p className="text-gray-400">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-lg text-gray-400 mb-6">
+              30 minutes. Zero obligation. Worst case, you get free advice.
+            </p>
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Book Your Free Call
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Packages Section */}
-      <section id="packages" className="relative bg-primary-bg py-24 lg:py-32">
+      <section className="py-20 lg:py-28 bg-primary-bg">
         <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              Investment
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-12 max-w-4xl leading-tight">
-              Choose Your Growth Path
-            </h2>
-          </AnimatedSection>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-6">
+            Simple Pricing
+          </h2>
+          <p className="text-xl text-gray-400 text-center mb-16 max-w-2xl mx-auto">
+            Pick what fits your needs. Custom packages available.
+          </p>
 
-          {/* Carousel Navigation */}
-          <div className="flex items-center justify-center gap-4 mb-12">
-            <button
-              onClick={() => navigatePackages(Math.max(0, currentPackageIndex - 3))}
-              disabled={currentPackageIndex === 0}
-              className="p-3 bg-secondary-bg border border-tertiary-bg hover:border-accent-cyan hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <HiChevronLeft className="text-2xl text-accent-cyan" />
-            </button>
-            <div className="flex gap-2">
-              {[0, 3, 6].map((startIndex) => (
-                <button
-                  key={startIndex}
-                  onClick={() => navigatePackages(startIndex)}
-                  className={`h-3 rounded-full transition-all ${
-                    currentPackageIndex === startIndex ? 'bg-accent-cyan w-8' : 'bg-gray-600 w-3'
-                  }`}
-                />
-              ))}
-            </div>
-            <button
-              onClick={() => navigatePackages(Math.min(6, currentPackageIndex + 3))}
-              disabled={currentPackageIndex >= 6}
-              className="p-3 bg-secondary-bg border border-tertiary-bg hover:border-accent-cyan hover:scale-110 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-            >
-              <HiChevronRight className="text-2xl text-accent-cyan" />
-            </button>
-          </div>
-
-          <div className="relative overflow-hidden">
-            <AnimatePresence mode="wait" custom={direction}>
-              <motion.div
-                key={currentPackageIndex}
-                custom={direction}
-                variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
-                transition={{
-                  x: { type: "spring", stiffness: 300, damping: 30 },
-                  opacity: { duration: 0.2 }
-                }}
-                className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center"
-              >
-                {[
-                  // Page 1: Marketing packages (original from PDF)
-                  {
-                    badge: 'Starter',
-                    title: 'Online Presence Starter',
-                    subtitle: 'Ideal for small businesses',
-                    features: [
-                      'Social media management',
-                      'Professional business website',
-                      'Monthly performance reports'
-                    ],
-                    price: '350,000',
-                    currency: 'FCFA'
-                  },
-                  {
-                    badge: 'Popular',
-                    title: 'Lead Generation System',
-                    subtitle: 'Ideal for service-based businesses',
-                    features: [
-                      'Paid campaign setup (Meta & Google)',
-                      'Landing page design',
-                      'Conversion tracking setup',
-                      'Campaign optimization'
-                    ],
-                    price: '500,000',
-                    currency: 'FCFA',
-                    featured: true
-                  },
-                  {
-                    badge: 'Growth',
-                    title: 'Growth Retainer',
-                    subtitle: 'Ideal for scaling brands',
-                    features: [
-                      'Monthly social media management',
-                      'Ongoing ad optimization',
-                      'Performance tracking & reporting'
-                    ],
-                    price: 'Monthly',
-                    currency: 'Plans Available'
-                  },
-                  // Page 2: Entry + Dev packages
-                  {
-                    badge: 'Essential',
-                    title: 'Website Essentials',
-                    subtitle: 'Perfect for getting started',
-                    features: [
-                      'Professional landing page or simple website',
-                      'Mobile responsive design',
-                      'WhatsApp button integration',
-                      'Contact form',
-                      'Google Maps (if needed)',
-                      '5-7 day delivery'
-                    ],
-                    price: '150,000',
-                    currency: 'FCFA'
-                  },
-                  {
-                    badge: 'E-commerce',
-                    title: 'Online Store + Launch',
-                    subtitle: 'Sell online with ads',
-                    features: [
-                      'Custom e-commerce website',
-                      'Product catalog & inventory',
-                      'Payment processing (cards/mobile money)',
-                      'Order management system',
-                      'Launch campaign (ads + social)',
-                      'WhatsApp integration'
-                    ],
-                    price: '500,000',
-                    currency: 'FCFA'
-                  },
-                  {
-                    badge: 'Automation',
-                    title: 'Business Automation + Leads',
-                    subtitle: 'Automate & capture leads',
-                    features: [
-                      'Custom automation workflows',
-                      'Lead capture forms',
-                      'Email/SMS automation',
-                      'CRM integration',
-                      'Basic marketing setup',
-                      'Analytics dashboard'
-                    ],
-                    price: '450,000',
-                    currency: 'FCFA'
-                  },
-                  // Page 3: Premium dev package
-                  {
-                    badge: 'Premium',
-                    title: 'Custom Platform + Marketing',
-                    subtitle: 'Full system + growth strategy',
-                    features: [
-                      'Custom web application',
-                      'User management & dashboards',
-                      'Mobile-responsive design',
-                      'Business automation',
-                      'Brand launch campaign',
-                      '3 months support & optimization'
-                    ],
-                    price: 'Custom',
-                    currency: 'Starting 450K FCFA',
-                    featured: true
-                  },
-                  {
-                    badge: 'Booking',
-                    title: 'Booking System Package',
-                    subtitle: 'Appointments + reminders',
-                    features: [
-                      'Custom booking/reservation system',
-                      'Automated email/SMS reminders',
-                      'Payment integration',
-                      'WhatsApp notifications',
-                      'Basic landing page',
-                      'Google Calendar sync'
-                    ],
-                    price: '750,000',
-                    currency: 'FCFA'
-                  },
-                  {
-                    badge: 'Custom',
-                    title: 'Custom Quote',
-                    subtitle: 'Need something specific?',
-                    features: [
-                      'We build custom solutions',
-                      'Monthly retainers available',
-                      'À la carte services',
-                      'Flexible payment plans',
-                      'Book a call to discuss',
-                      'Tailored to your budget'
-                    ],
-                    price: "Let's Talk",
-                    currency: 'Custom Quote'
-                  }
-                ].slice(currentPackageIndex, currentPackageIndex + 3).map((pkg, index) => (
-              <motion.div
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {[
+              {
+                title: 'Starter Website',
+                price: '150,000',
+                description: 'Perfect for getting started online',
+                features: [
+                  'Professional landing page',
+                  'Mobile-friendly design',
+                  'WhatsApp button',
+                  'Contact form',
+                  '5-7 day delivery',
+                ],
+              },
+              {
+                title: 'Marketing + Website',
+                price: '350,000',
+                description: 'Get found and convert visitors',
+                features: [
+                  'Professional website',
+                  'Social media setup',
+                  'Facebook/Google Ads setup',
+                  'Monthly performance report',
+                ],
+                featured: true,
+              },
+              {
+                title: 'Full Growth System',
+                price: '500,000+',
+                description: 'Marketing + custom tools',
+                features: [
+                  'Everything in Marketing',
+                  'Booking/reservation system',
+                  'Payment processing',
+                  'Automated reminders',
+                  'Ongoing optimization',
+                ],
+              },
+            ].map((pkg, index) => (
+              <div
                 key={index}
-                variants={scaleIn}
-                whileHover={{ scale: pkg.featured ? 1.02 : 1.03, y: -8 }}
-                className={`relative bg-secondary-bg p-10 border-2 transition-all duration-500 ${
+                className={`p-8 border-2 ${
                   pkg.featured
-                    ? 'lg:scale-110 border-accent-cyan shadow-[0_0_80px_rgba(0,217,255,0.3)]'
-                    : 'border-tertiary-bg hover:border-accent-cyan hover:shadow-[0_30px_80px_rgba(0,217,255,0.15)]'
+                    ? 'border-accent-cyan bg-secondary-bg'
+                    : 'border-tertiary-bg bg-secondary-bg'
                 }`}
               >
-                <div className="absolute -top-4 left-10 bg-accent-orange text-primary-bg px-6 py-2 text-xs font-bold uppercase tracking-wider">
-                  {pkg.badge}
-                </div>
-
                 {pkg.featured && (
-                  <div className="absolute -top-4 right-10 bg-accent-cyan text-primary-bg px-4 py-2 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
-                    <BsFire />
-                    Best Value
+                  <div className="text-accent-cyan text-xs font-bold uppercase tracking-wider mb-4">
+                    Most Popular
                   </div>
                 )}
-
-                <h3 className="font-display text-2xl md:text-3xl font-black mb-2 mt-4">
+                <h3 className="font-display text-2xl font-bold mb-2">
                   {pkg.title}
                 </h3>
-
-                <p className="text-gray-500 text-sm mb-8">
-                  {pkg.subtitle}
+                <p className="text-gray-500 text-sm mb-6">
+                  {pkg.description}
                 </p>
-
-                <div className="mb-8">
-                  <div className="text-5xl font-black text-accent-cyan mb-2">
-                    {pkg.price === 'Custom' ? pkg.price : `${pkg.price}`}
-                  </div>
-                  <div className="text-sm text-gray-400">{pkg.currency}</div>
+                <div className="mb-6">
+                  <span className="text-4xl font-black text-accent-cyan">{pkg.price}</span>
+                  <span className="text-gray-400 ml-2">FCFA</span>
                 </div>
-
-                <ul className="space-y-4 mb-8">
+                <ul className="space-y-3 mb-8">
                   {pkg.features.map((feature, i) => (
                     <li key={i} className="flex items-start gap-3">
                       <BsCheckLg className="text-accent-cyan mt-1 flex-shrink-0" />
@@ -856,10 +565,9 @@ export default function SalesPage() {
                     </li>
                   ))}
                 </ul>
-
                 <button
                   onClick={handleCTAClick}
-                  className={`block w-full text-center py-4 font-display font-bold uppercase tracking-wider transition-all ${
+                  className={`w-full py-4 font-bold uppercase tracking-wider transition-colors ${
                     pkg.featured
                       ? 'bg-accent-cyan text-primary-bg hover:bg-accent-orange'
                       : 'border-2 border-accent-cyan text-accent-cyan hover:bg-accent-cyan hover:text-primary-bg'
@@ -867,123 +575,135 @@ export default function SalesPage() {
                 >
                   Get Started
                 </button>
-              </motion.div>
+              </div>
             ))}
-              </motion.div>
-            </AnimatePresence>
           </div>
 
-          <AnimatedSection>
-            <div className="mt-12 p-8 bg-tertiary-bg border-l-4 border-accent-yellow">
-              <div className="flex items-start gap-4">
-                <BsLightning className="text-accent-yellow text-3xl flex-shrink-0 mt-1" />
-                <div>
-                  <p className="text-lg font-bold text-white mb-2">
-                    Starting from 150,000 FCFA
-                  </p>
-                  <p className="text-gray-400">
-                    Exact pricing discussed during the strategy call. Need something specific? We can build custom packages tailored to your needs and budget.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
+          <p className="text-center text-gray-500 mt-12">
+            Need something different? <button onClick={handleCTAClick} className="text-accent-cyan hover:underline">Let's talk about your project</button>
+          </p>
         </div>
       </section>
 
-      {/* Why Choose Us Section */}
-      <section className="relative bg-secondary-bg py-24 lg:py-32">
+      {/* FAQ Section */}
+      <section className="py-20 lg:py-28 bg-secondary-bg">
         <div className="container mx-auto px-6 lg:px-12">
-          <AnimatedSection>
-            <span className="text-accent-orange text-xs font-bold uppercase tracking-[0.2em]">
-              Why Us
-            </span>
-            <h2 className="font-display text-4xl md:text-6xl lg:text-7xl font-black mt-4 mb-16 max-w-4xl leading-tight">
-              Why Choose Us
-            </h2>
-          </AnimatedSection>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black text-center mb-16">
+            Common Questions
+          </h2>
 
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-100px' }}
-            variants={staggerContainer}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12"
-          >
+          <div className="max-w-3xl mx-auto space-y-6">
             {[
-              { icon: <HiOutlineCode />, title: 'Development + Marketing Experts' },
-              { icon: <HiOutlineChartBar />, title: 'Focus on Revenue, Not Vanity Metrics' },
-              { icon: <FaRocket />, title: 'We Build AND Market Your Systems' },
-              { icon: <HiOutlineChatAlt2 />, title: 'Fast Execution, Clear Communication' }
+              {
+                q: "How long does it take to see results?",
+                a: "Most clients start seeing leads within the first 2-4 weeks after launch. For SEO and organic growth, expect 2-3 months for significant traction.",
+              },
+              {
+                q: "What if I already have a website?",
+                a: "Great! We can either improve your existing site or build you a new one. We'll recommend the best approach during our call.",
+              },
+              {
+                q: "Do you work with small businesses?",
+                a: "Absolutely. Most of our clients are small to medium businesses — salons, restaurants, consultants, retail shops, service providers.",
+              },
+              {
+                q: "What's included in the monthly reports?",
+                a: "Traffic, leads, ad performance, what's working, what we're testing next. Clear numbers, no fluff.",
+              },
+              {
+                q: "Can I cancel anytime?",
+                a: "For one-time projects, you pay once and own everything. For ongoing services, we work month-to-month. No long contracts.",
+              },
+              {
+                q: "Do you offer payment plans?",
+                a: "Yes, we can split payments for larger projects. Let's discuss what works for you on the call.",
+              },
+              {
+                q: "What if I'm not happy with the work?",
+                a: "We revise until you're satisfied. We don't consider a project done until you're happy with it.",
+              },
+              {
+                q: "How do I know this will work for MY business?",
+                a: "That's exactly what the free call is for. We'll look at your specific situation and tell you honestly if we can help.",
+              },
             ].map((item, index) => (
-              <motion.div
+              <div
                 key={index}
-                variants={fadeInUp}
-                whileHover={{ y: -8 }}
-                className="text-center"
+                className="p-6 bg-primary-bg border border-tertiary-bg"
               >
-                <motion.div
-                  className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-accent-cyan to-accent-orange flex items-center justify-center text-4xl text-white transition-transform"
-                  whileHover={{ rotate: 45, scale: 1.1 }}
-                  style={{
-                    clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'
-                  }}
-                >
-                  {item.icon}
-                </motion.div>
-                <h3 className="font-display text-xl md:text-2xl font-bold">
-                  {item.title}
+                <h3 className="font-display text-lg font-bold mb-3 text-white">
+                  {item.q}
                 </h3>
-              </motion.div>
+                <p className="text-gray-400 leading-relaxed">
+                  {item.a}
+                </p>
+              </div>
             ))}
-          </motion.div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-lg text-gray-400 mb-6">
+              Still have questions? Ask us on the call.
+            </p>
+            <button
+              onClick={handleCTAClick}
+              className="px-10 py-4 bg-accent-cyan text-primary-bg font-display font-bold uppercase tracking-wider hover:bg-accent-orange transition-colors"
+            >
+              Book Your Free Call
+            </button>
+          </div>
         </div>
       </section>
 
       {/* Final CTA Section */}
-      <section id="contact" className="relative bg-primary-bg py-32 lg:py-40 text-center overflow-hidden border-t border-accent-cyan/20">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full bg-accent-cyan/10 blur-[100px] animate-pulse-glow" />
+      <section className="py-24 lg:py-32 bg-primary-bg text-center border-t border-tertiary-bg">
+        <div className="container mx-auto px-6 lg:px-12">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent-orange/20 border border-accent-orange/50 mb-8">
+            <BsFire className="text-accent-orange" />
+            <span className="text-accent-orange text-sm font-bold uppercase tracking-wider">
+              Limited Availability
+            </span>
+          </div>
 
-        <div className="container mx-auto px-6 lg:px-12 relative z-10">
-          <AnimatedSection>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <BsFire className="text-accent-orange text-3xl" />
-              <span className="text-accent-orange font-bold uppercase tracking-wider">Only 5 Spots Available This Month</span>
-              <BsFire className="text-accent-orange text-3xl" />
-            </div>
-
-            <h2
-              className="font-display text-4xl md:text-6xl lg:text-8xl font-black mb-8 leading-tight"
-              style={{
-                background: 'linear-gradient(135deg, #00d9ff, #ff6b35)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text'
-              }}
-            >
-              Ready to Build Systems That Scale?
-            </h2>
-
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Book a free 30-minute strategy call. We'll review your business, show you how to automate your processes, and create a plan to grow your revenue — no obligation.
-            </p>
-
-            <div className="flex flex-col items-center gap-6 mb-8">
-              <button
-                onClick={handleCTAClick}
-                className="group relative inline-block px-14 py-6 bg-accent-cyan text-primary-bg font-display font-bold text-lg uppercase tracking-wider overflow-hidden transition-all hover:shadow-[0_0_60px_rgba(255,107,53,0.4)] hover:-translate-y-1"
-              >
-                <span className="relative z-10">Book Your Free Call Now</span>
-                <div className="absolute inset-0 bg-accent-orange transform -translate-x-full group-hover:translate-x-0 transition-transform duration-400" />
-              </button>
-
-              <p className="text-sm text-gray-500">
-                ⚡ Most projects delivered in 4-8 weeks
-              </p>
-            </div>
-          </AnimatedSection>
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+            Ready to Get More Customers?
+          </h2>
+          <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-10">
+            Book your free 30-minute strategy call. We'll look at your business and show you exactly how we can help you grow.
+          </p>
+          <button
+            onClick={handleCTAClick}
+            className="px-12 py-5 bg-accent-cyan text-primary-bg font-display font-bold text-lg uppercase tracking-wider hover:bg-accent-orange transition-colors"
+          >
+            Book Your Free Call Now
+          </button>
+          <p className="mt-6 text-gray-500 text-sm">
+            No credit card required. No obligation. Just a conversation.
+          </p>
         </div>
       </section>
+
+      {/* Sticky Bottom CTA */}
+      <motion.div
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        className="fixed bottom-0 left-0 right-0 z-50 bg-secondary-bg/95 backdrop-blur-lg border-t border-accent-cyan/20 py-4 px-6"
+      >
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="hidden md:block">
+            <span className="text-white font-bold">Ready to get more customers?</span>
+          </div>
+          <button
+            onClick={handleCTAClick}
+            className="w-full md:w-auto px-8 py-3 bg-accent-cyan text-primary-bg font-display font-bold text-sm uppercase tracking-wider hover:bg-accent-orange transition-colors"
+          >
+            Book Free Call
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Spacer for sticky bar */}
+      <div className="h-20" />
 
       {/* Lead Capture Modal */}
       <LeadCaptureModal

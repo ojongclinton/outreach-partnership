@@ -1,0 +1,29 @@
+Cta Sticky at the bottom
+
+Center big text at the top
+
+We need something simpler
+
+Let's do more of what's in the
+document he sent as it looks more
+like an MVP (One_Page_Sales_Website_Copy.pdf)
+
+Design is very good but for a
+corporate website , we need
+something simpler
+
+Check if modal button works fine. U
+can redirect user before even
+making request to firebase
+
+Why choose us : remove that
+section
+
+Let's focus in selling one particular
+thing (what's in the document)
+
+Check the link he sent on Linkedln
+Focus more on what is in benefit for
+them
+
+Remove yourself (yor benefits) from the picture , talk more of whats to be 
