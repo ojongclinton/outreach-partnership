@@ -23,6 +23,7 @@ export type LeadData = {
 
 export async function saveLeadToFirestore(leadData: LeadData) {
   try {
+    console.log('Saving lead to Firestore:', leadData);
     const docRef = await addDoc(collection(db, 'collected_users'), {
       ...leadData,
       created_at: serverTimestamp(),

@@ -43,14 +43,14 @@ export default function LeadCaptureModal({ isOpen, onClose, calendlyUrl }: LeadC
       console.error('Failed to save lead:', err);
     });
 
-    // Reset form
-    setFormData({
-      full_name: '',
-      email: '',
-      telephone: '',
-      business_name: '',
-      goal: '',
-    });
+    // // Reset form
+    // setFormData({
+    //   full_name: '',
+    //   email: '',
+    //   telephone: '',
+    //   business_name: '',
+    //   goal: '',
+    // });
   };
 
   return (

@@ -7,7 +7,7 @@ import LeadCaptureModal from './components/LeadCaptureModal';
 
 export default function SalesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const calendlyUrl = import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com';
+  const calendlyUrl = import.meta.env.VITE_CALENDLY_URL || 'https://calendly.com/talktonongki/discovery-call-with-nongki';
 
   const handleCTAClick = () => {
     setIsModalOpen(true);
